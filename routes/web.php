@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+//User routes
 Route::post('/register', [UserController::class, 'createUser']);
 Route::post('/logout', [UserController::class, 'logout']);
 Route::post('/login', [UserController::class, 'login']);
+
+//Post routes
+Route::post('/create-post', [PostController::class, 'createPost']);
