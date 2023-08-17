@@ -43,4 +43,8 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function postsBelongsTo() {
+        return $this->hasMany(Post::class, 'user_id');
+    }
 }

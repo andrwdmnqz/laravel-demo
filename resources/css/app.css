@@ -13,3 +13,9 @@ label {
 .input-submit-zxc {
     margin-left: 10px;
 }
+
+.post {
+    padding: 10px;
+    margin: 10px;
+    background-color: #9ca3af;
+}

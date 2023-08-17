@@ -25,6 +25,23 @@
                 <input type="submit" value="Create" class="input-submit-zxc">
             </form>
         </div>
+
+        <div class="border-div">
+            <h2>All posts</h2>
+            @foreach($posts as $post)
+                <div class="post">
+                    <h3>{{$post['title']}} by {{$post->getAuthor->name}}</h3>
+                    {{$post['body']}}
+                    <p><a href="/edit-post/{{$post->id}}">Edit</a></p>
+                    <form action="/delete-post/{{$post->id}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
+
     @else
         <h2>Please, sign in</h2>
         <div class="border-div">
