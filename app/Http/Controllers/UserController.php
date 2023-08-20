@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     public function createUser(Request $request) {
         $inputFields = $request->validate([
-            'name' => ['required', 'min:3', 'max:20', Rule::unique('users', 'name')],
-            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'name' => ['required', 'min:3', 'max:20', 'unique:users'],
+            'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:6', 'max:50']
         ]);
 
-        $inputFields['password'] = bcrypt($inputFields['password']);
+        $inputFields['password'] = Hash::make($inputFields['password']);
         $user = User::create($inputFields);
 
         auth()->login($user);

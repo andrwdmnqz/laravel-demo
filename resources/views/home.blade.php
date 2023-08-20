@@ -32,12 +32,14 @@
                 <div class="post">
                     <h3>{{$post['title']}} by {{$post->getAuthor->name}}</h3>
                     {{$post['body']}}
-                    <p><a href="/edit-post/{{$post->id}}">Edit</a></p>
-                    <form action="/delete-post/{{$post->id}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
+                    @if($post['user_id'] === auth()->user()->id)
+                        <p><a href="/edit-post/{{$post->id}}">Edit</a></p>
+                        <form action="/delete-post/{{$post->id}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Delete</button>
+                        </form>
+                    @endif
                 </div>
             @endforeach
         </div>
