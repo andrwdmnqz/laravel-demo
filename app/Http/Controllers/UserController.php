@@ -26,7 +26,9 @@ class UserController extends Controller
 
     public function logout() {
         auth()->logout();
-        return redirect('/');
+        return response()->json([
+            'status' => 201
+        ]);
     }
 
     public function login(Request $request) {

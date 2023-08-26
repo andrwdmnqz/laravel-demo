@@ -53,6 +53,25 @@ class PostController extends Controller
 
         Post::create($inputFields);
 
-        return redirect('/');
+        return response()->json([
+            'status' => 201
+        ]);
+    }
+
+    public function showPosts() {
+        $posts = Post::all();
+        $output = [];
+
+        if ($posts->count() > 0) {
+            foreach($posts as $post) {
+                $output[] = [
+                    'title' => $post->title,
+                    'author' => $post->getAuthor->name,
+                    'body' => $post->body,
+                    'is_author' => $post->user_id === auth()->user()->id
+                ];
+            }
+        }
+        return response()->json($output);
     }
 }

@@ -23,11 +23,12 @@ Route::get('/', function () {
 
 //User routes
 Route::post('/register', [UserController::class, 'createUser']);
-Route::post('/logout', [UserController::class, 'logout']);
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login']);
 
 //Post routes
-Route::post('/create-post', [PostController::class, 'createPost']);
+Route::post('/create-post', [PostController::class, 'createPost'])->name('create_post');
+Route::get('/show-posts', [PostController::class, 'showPosts'])->name('show_posts');
 Route::get('/edit-post/{post}', [PostController::class, 'showEditView']);
 Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
