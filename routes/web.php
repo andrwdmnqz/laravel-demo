@@ -22,9 +22,9 @@ Route::get('/', function () {
 });
 
 //User routes
-Route::post('/register', [UserController::class, 'createUser']);
+Route::post('/register', [UserController::class, 'createUser'])->name('register');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [UserController::class, 'login'])->name('login');
 
 //Post routes
 Route::post('/create-post', [PostController::class, 'createPost'])->name('create_post');

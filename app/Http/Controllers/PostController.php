@@ -13,7 +13,9 @@ class PostController extends Controller
             $post->delete();
         }
 
-        return redirect('/');
+        return response()->json([
+            'text' => 'text'
+        ]);
     }
     public function updatePost(Request $request, Post $post) {
         if (auth()->user()->id !== $post->user_id) {
@@ -64,11 +66,20 @@ class PostController extends Controller
 
         if ($posts->count() > 0) {
             foreach($posts as $post) {
+                if(auth()->user()) {
+                    $is_author = $post->user_id === auth()->user()->id;
+
+                }
+                else {
+                    $is_author = false;
+                }
+
                 $output[] = [
+                    'id' => $post->id,
                     'title' => $post->title,
                     'author' => $post->getAuthor->name,
                     'body' => $post->body,
-                    'is_author' => $post->user_id === auth()->user()->id
+                    'is_author' => $is_author
                 ];
             }
         }

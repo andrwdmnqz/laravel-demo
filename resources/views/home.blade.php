@@ -33,7 +33,7 @@
     @else
         <h2>Please, sign in</h2>
         <div class="border-div">
-            <form method="POST" action="/register">
+            <form class="reg-form">
                 @csrf
                 <h2>Registration</h2>
                 <label for="regname">Username </label>
@@ -46,7 +46,7 @@
             </form>
         </div>
         <div class="border-div">
-            <form action="/login" method="POST">
+            <form class="login-form">
                 @csrf
                 <h2>Login</h2>
                 <label for="logemail">Email </label>
@@ -65,6 +65,7 @@
             displayPosts();
         });
 
+        // Function to show all posts
         function displayPosts() {
             $.ajax({
                 url: '{{ route('show_posts') }}',
@@ -82,7 +83,7 @@
                                 '<h3>' + post.title + ' by ' + post.author + '</h3>' +
                                 post.body +
                                 (post.is_author ? '<p><a href="/edit-post/' + post.id + '">Edit</a></p>' +
-                                '<form action="/delete-post/' + post.id + '" method="POST">' +
+                                '<form action="/delete-post/' + post.id + '" method="POST" class="delete-post-form">' +
                                     '@csrf' +
                                     '@method("DELETE")' +
                                     '<button type="submit">Delete</button>' +
@@ -95,6 +96,7 @@
             });
         }
 
+        // Logout ajax query
         $('#logout-form').submit(function(event) {
             event.preventDefault();
 
@@ -107,10 +109,14 @@
                 success: function(response) {
                     console.log(response);
                     location.reload();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log("Error:", errorThrown);
                 }
             })
         });
 
+        // Create post ajax query
         $('#create-post').submit(function(event) {
             event.preventDefault();
 
@@ -132,6 +138,76 @@
                     displayPosts();
                 }
             });
+        });
+
+        // Delete post ajax query
+        $(document).on('submit', '.delete-post-form', function(event) {
+            event.preventDefault();
+
+            var formAction = $(this).attr('action');
+
+            $.ajax({
+                url: formAction,
+                method: 'delete',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log("Deleted");
+                    displayPosts();
+                }
+            });
+        });
+
+        // Registration form
+        $(document).on('submit', '.reg-form', function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var formData = form.serialize();
+
+            var name = form.find('#regname').val();
+            var email = form.find('#regemail').val();
+            var password = form.find('#regpassword').val();
+
+            $.ajax({
+                url: '{{ route('register') }}',
+                method: 'post',
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log("Registered");
+                    location.reload();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log("Error:", errorThrown);
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        console.log("Validation errors:", xhr.responseJSON.errors);
+                    }
+                }
+            })
+        });
+
+        // Login form
+        $(document).on('submit', '.login-form', function(event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var formData = form.serialize();
+
+            $.ajax({
+                url: '{{ route('login') }}',
+                method: 'post',
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log("Logged in successfully");
+                    location.reload();
+                }
+            })
         });
     </script>
 </body>
