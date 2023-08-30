@@ -15,6 +15,7 @@
             @csrf
             <button type="submit">Log out</button>
         </form>
+        <a href="{{ route('admin_view') }}">Check admin view</a>
         <div class="border-div">
             <form id="create-post">
                 @csrf

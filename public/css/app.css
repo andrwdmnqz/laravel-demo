@@ -20,3 +20,7 @@ label {
     background-color: #9ca3af;
 }
 
+.ml-3 {
+    display: flex;
+}
+

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
@@ -21,14 +22,21 @@ Route::get('/', function () {
     return view('home', ['posts' => $posts]);
 });
 
-//User routes
+// User routes
 Route::post('/register', [UserController::class, 'createUser'])->name('register');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 
-//Post routes
+// Post routes
 Route::post('/create-post', [PostController::class, 'createPost'])->name('create_post');
 Route::get('/show-posts', [PostController::class, 'showPosts'])->name('show_posts');
 Route::get('/edit-post/{post}', [PostController::class, 'showEditView']);
 Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
+
+
+// Admin routes
+Route::middleware(['auth', 'admin'])->group(function() {
+    Route::get('/admin-view', [HomeController::class, 'adminView'])->name('admin_view');
+    Route::post('/admin-view/show-posts', [HomeController::class, 'posts'])->name('admin_posts');
+});
