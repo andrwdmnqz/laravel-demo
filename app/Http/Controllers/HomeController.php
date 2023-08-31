@@ -48,4 +48,31 @@ class HomeController extends Controller
         }
         return response()->json($content);
     }
+
+    public function editInfo(Post $post) {
+        return response()->json($post);
+    }
+
+    public function updatePost(Request $request, Post $post) {
+        $inputFields = $request->validate([
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        $inputFields['title'] = strip_tags($inputFields['title']);
+        $inputFields['body'] = strip_tags($inputFields['body']);
+
+        $post->update($inputFields);
+        return response()->json([
+            'text' => 'text'
+        ]);
+    }
+
+    public function deletePost(Post $post) {
+        $post->delete();
+
+        return response()->json([
+            'text' => 'text'
+        ]);
+    }
 }

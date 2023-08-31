@@ -39,4 +39,7 @@ Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
 Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin-view', [HomeController::class, 'adminView'])->name('admin_view');
     Route::post('/admin-view/show-posts', [HomeController::class, 'posts'])->name('admin_posts');
+    Route::get('/admin-view/edit-post/{post}', [HomeController::class, 'editInfo']);
+    Route::put('/admin-view/edit-post/{post}', [HomeController::class, 'updatePost']);
+    Route::delete('/admin-view/delete-post/{post}', [HomeController::class, 'deletePost']);
 });

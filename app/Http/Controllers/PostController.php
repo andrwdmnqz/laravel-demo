@@ -56,7 +56,7 @@ class PostController extends Controller
         Post::create($inputFields);
 
         return response()->json([
-            'status' => 201
+            'status' => 200
         ]);
     }
 
