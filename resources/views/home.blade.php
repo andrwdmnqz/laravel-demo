@@ -81,16 +81,30 @@
                     if (response.length > 0) {
                         response.forEach(function(post) {
                             var postHtml = '<div class="post">' +
-                                '<h3>' + post.title + ' by ' + post.author + '</h3>' +
-                                post.body +
-                                (post.is_author ? '<p><a href="/edit-post/' + post.id + '">Edit</a></p>' +
-                                '<form action="/delete-post/' + post.id + '" method="POST" class="delete-post-form">' +
-                                    '@csrf' +
-                                    '@method("DELETE")' +
-                                    '<button type="submit">Delete</button>' +
-                                '</form>' : '') +
-                            '</div>';
+                                '<div class="post-title" data-user_id="' + post.author_id +'" data-is_online="' + post.is_online +'">' +
+                                '<h3><span class="author-name">' + post.title + ' by ' + post.author + '</span>';
+
+                            if (post.is_online === true) {
+                                postHtml += '<span class="status-circle status-online"></span>' +
+                                    '<span class="text-success">Online</span>';
+                            } else {
+                                postHtml += '<span class="status-circle status-offline"></span>' +
+                                    '<span class="text-secondary">Offline</span>';
+                            }
+
+                            postHtml += ' last seen: ' + post.last_seen +
+                                        '</h3>' +
+                                        '</div>' +
+                                        post.body +
+                                        (post.is_author ? '<p><a href="/edit-post/' + post.id + '">Edit</a></p>' +
+                                        '<form action="/delete-post/' + post.id + '" method="POST" class="delete-post-form">' +
+                                            '@csrf' +
+                                            '@method("DELETE")' +
+                                            '<button type="submit">Delete</button>' +
+                                        '</form>' : '') +
+                                    '</div>';
                             postsDiv.append(postHtml);
+
                         })
                     }
                 }

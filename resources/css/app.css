@@ -23,3 +23,24 @@ label {
 .ml-3 {
     display: flex;
 }
+
+.status-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.status-online {
+    background-color: green;
+}
+
+.status-offline {
+    background-color: red;
+}
+
+.author-name {
+    padding-right: 20px;
+}
+

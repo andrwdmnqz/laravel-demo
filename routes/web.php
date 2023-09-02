@@ -26,6 +26,7 @@ Route::get('/', function () {
 Route::post('/register', [UserController::class, 'createUser'])->name('register');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::get('/status', [UserController::class, 'showStatus'])->name('user_status');
 
 // Post routes
 Route::post('/create-post', [PostController::class, 'createPost'])->name('create_post');

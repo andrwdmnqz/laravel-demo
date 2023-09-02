@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -27,6 +27,12 @@ class UserController extends Controller
     }
 
     public function logout() {
+
+        $user = Auth::user();
+        $user->update([
+            'last_seen' => now(),
+        ]);
+
         auth()->logout();
         return response()->json([
             'status' => 201
@@ -44,5 +50,11 @@ class UserController extends Controller
         }
 
         return redirect('/');
+    }
+
+    public function showStatus() {
+        $users = User::all();
+
+        return response()->json($users);
     }
 }

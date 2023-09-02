@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -79,7 +80,10 @@ class PostController extends Controller
                     'title' => $post->title,
                     'author' => $post->getAuthor->name,
                     'body' => $post->body,
-                    'is_author' => $is_author
+                    'is_author' => $is_author,
+                    'author_id' => $post->getAuthor->id,
+                    'last_seen' => $post->getAuthor->last_seen,
+                    'is_online' => (Cache::has('is_online' . $post->getAuthor->id))
                 ];
             }
         }
