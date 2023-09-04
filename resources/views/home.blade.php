@@ -5,6 +5,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     <link href="css/app.css" rel="stylesheet">
     <title>Home page</title>
 </head>
@@ -92,7 +93,7 @@
                                     '<span class="text-secondary">Offline</span>';
                             }
 
-                            postHtml += ' last seen: ' + post.last_seen +
+                            postHtml += ' last seen: ' + formatLastSeen(post.last_seen) +
                                         '</h3>' +
                                         '</div>' +
                                         post.body +
@@ -109,6 +110,28 @@
                     }
                 }
             });
+        }
+
+        function formatLastSeen(lastSeen) {
+            var currentTimestamp = new Date();
+            var lastSeenDate = new Date(lastSeen);
+            lastSeenDate.setHours(lastSeenDate.getHours() + 3);
+
+            var timeDifference = currentTimestamp - lastSeenDate;
+            var seconds = Math.floor(timeDifference / 1000);
+            var minutes = Math.floor(seconds / 60);
+            var hours = Math.floor(minutes / 60);
+            var days = timeDifference = Math.floor(hours / 24);
+
+            if (days > 0) {
+                return days + ' days ago';
+            } else if (hours > 0) {
+                return hours + ' hours ago';
+            } else if (minutes > 0) {
+                return 'minutes ago';
+            } else {
+                return 'just now';
+            }
         }
 
         // Logout ajax query
