@@ -18,13 +18,15 @@
         </form>
         <a href="{{ route('admin_view') }}">Check admin view</a>
         <div class="border-div">
-            <form id="create-post">
+            <form id="create-post-form" enctype="multipart/form-data">
                 @csrf
                 <h2>Create post</h2>
                 <label for="posttitle">Post title</label>
                 <input type="text" name="title" id="posttitle">
                 <label for="postbody">Post body</label>
                 <textarea name="body" id="postbody"></textarea>
+                <label for="postimage">Post image</label>
+                <input type="file" name="img" placeholder="Product image">
                 <input type="submit" value="Create" class="input-submit">
             </form>
         </div>
@@ -81,7 +83,9 @@
 
                     if (response.length > 0) {
                         response.forEach(function(post) {
+                            var imageUrl = '/storage/' + post.image;
                             var postHtml = '<div class="post">' +
+                                '<img src="'+ imageUrl +'" alt="Image" style="width: 10%;">' +
                                 '<div class="post-title" data-user_id="' + post.author_id +'" data-is_online="' + post.is_online +'">' +
                                 '<h3><span class="author-name">' + post.title + ' by ' + post.author + '</span>';
 
@@ -155,28 +159,31 @@
         });
 
         // Create post ajax query
-        $('#create-post').submit(function(event) {
+        $('#create-post-form').submit(function(event) {
             event.preventDefault();
 
-            var form = $(this);
-            var formData = form.serialize();
+            var form = $('#create-post-form')[0];
+            var formData = new FormData(form);
 
             $.ajax({
                 url: '{{ route('create_post') }}',
                 method: 'post',
                 data: formData,
+                contentType: false,
+                processData: false,
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
                     if (response.status == 201) {
                         console.log("Post created successfully");
-                        form.trigger('reset');
+                        $('#create-post-form')[0].reset();
                     }
                     displayPosts();
                 }
             });
         });
+
 
         // Delete post ajax query
         $(document).on('submit', '.delete-post-form', function(event) {

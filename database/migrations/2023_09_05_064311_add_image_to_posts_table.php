@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin')->nullable()->default(0)->after('password');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('image')->after('user_id');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('image');
         });
     }
 };

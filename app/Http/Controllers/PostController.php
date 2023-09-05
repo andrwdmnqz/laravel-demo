@@ -44,20 +44,32 @@ class PostController extends Controller
     }
 
     public function createPost(Request $request) {
+
         $inputFields = $request->validate([
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            'img' => 'image'
         ]);
+
+        $filename = 'img/default-image.png';
+
+        if ($request->hasFile('img')) {
+            $uploadedFile = $request->file('img');
+            $filename = $uploadedFile->store('public/img');
+
+            $filename = str_replace('public/', '', $filename);
+        }
 
         $inputFields['title'] = strip_tags($inputFields['title']);
         $inputFields['body'] = strip_tags($inputFields['body']);
 
         $inputFields['user_id'] = auth()->id();
+        $inputFields['image'] = $filename;
 
         Post::create($inputFields);
 
         return response()->json([
-            'status' => 200
+            'status' => 201
         ]);
     }
 
@@ -77,6 +89,7 @@ class PostController extends Controller
 
                 $output[] = [
                     'id' => $post->id,
+                    'image' => $post->image,
                     'title' => $post->title,
                     'author' => $post->getAuthor->name,
                     'body' => $post->body,
