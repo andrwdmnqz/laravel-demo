@@ -27,6 +27,8 @@ Route::post('/register', [UserController::class, 'createUser'])->name('register'
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::get('/status', [UserController::class, 'showStatus'])->name('user_status');
+Route::get('/user-cab/{user}', [UserController::class, 'getUser'])->name('user_info');
+Route::put('/edit-user/{user}', [UserController::class, 'updateUser'])->name('update_user');
 
 // Post routes
 Route::post('/create-post', [PostController::class, 'createPost'])->name('create_post');
@@ -34,7 +36,6 @@ Route::get('/show-posts', [PostController::class, 'showPosts'])->name('show_post
 Route::get('/edit-post/{post}', [PostController::class, 'showEditView']);
 Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
-
 
 // Admin routes
 Route::middleware(['auth', 'admin'])->group(function() {

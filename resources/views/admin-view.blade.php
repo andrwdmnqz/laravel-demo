@@ -66,7 +66,8 @@
                 success: function(response) {
                     var tableDiv = $('#post-table');
                     tableDiv.empty();
-                    var allPostsH2 = "<h2>Admin view</h2>";
+                    var allPostsH2 = "<h2>Admin view</h2>" +
+                    '<a href="/">Back to main page</a>';
                     tableDiv.append(allPostsH2);
 
                     if (response.length > 0) {

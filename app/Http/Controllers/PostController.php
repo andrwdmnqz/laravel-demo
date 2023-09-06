@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -22,14 +23,28 @@ class PostController extends Controller
         if (auth()->user()->id !== $post->user_id) {
             return redirect('/');
         }
+        //dd($request->all());
 
         $inputFields = $request->validate([
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            'img' => 'image'
         ]);
 
         $inputFields['title'] = strip_tags($inputFields['title']);
         $inputFields['body'] = strip_tags($inputFields['body']);
+
+        if($request->hasFile('img')) {
+            if($post->image != 'img/default-image.png') {
+                $filepathToDelete = storage_path('app/public/' . $post->image);
+                File::delete($filepathToDelete);
+            }
+
+            $uploadedFile = $request->file('img');
+            $filename = $uploadedFile->store('public/img');
+            $filename = str_replace('public/', '', $filename);
+            $inputFields['image'] = $filename;
+        }
 
         $post->update($inputFields);
 
