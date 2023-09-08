@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WeatherController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
@@ -45,3 +46,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::put('/admin-view/edit-post/{post}', [HomeController::class, 'updatePost']);
     Route::delete('/admin-view/delete-post/{post}', [HomeController::class, 'deletePost']);
 });
+
+// Weather routes
+Route::get('/weather', [WeatherController::class, 'weatherView'])->name('get_page');
+Route::post('/weather', [WeatherController::class, 'getWeather'])->name('get_weather');

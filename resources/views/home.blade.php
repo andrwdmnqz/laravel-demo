@@ -18,6 +18,7 @@
         </form>
         <a href="{{ route('admin_view') }}">Check admin view</a>
         <a href="/user-cab/{{ auth()->user()->id }}">User personal cabinet</a>
+        <a href="/weather">Check weather</a>
         <div class="border-div">
             <form id="create-post-form" enctype="multipart/form-data">
                 @csrf
