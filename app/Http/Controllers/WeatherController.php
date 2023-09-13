@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
 class WeatherController extends Controller
@@ -13,7 +14,7 @@ class WeatherController extends Controller
 
     public function getWeather(Request $request) {
         $city = $request->city;
-        $apiKey = '47f93007cf30db9a684a7f18ca19cbda';
+        $apiKey = Config::get('services.openweathermap.key');
 
         $response = Http::get('https://api.openweathermap.org/data/2.5/weather?q=' . $city . '&appid=' . $apiKey . '&units=metric');
 

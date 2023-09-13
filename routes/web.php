@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ScrapeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WeatherController;
 use App\Models\Post;
@@ -50,3 +51,6 @@ Route::middleware(['auth', 'admin'])->group(function() {
 // Weather routes
 Route::get('/weather', [WeatherController::class, 'weatherView'])->name('get_page');
 Route::post('/weather', [WeatherController::class, 'getWeather'])->name('get_weather');
+
+// Scrape routes
+Route::get('/buy/house', [ScrapeController::class, 'scrapeData'])->name('buy_house');

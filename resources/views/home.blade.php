@@ -19,19 +19,28 @@
         <a href="{{ route('admin_view') }}">Check admin view</a>
         <a href="/user-cab/{{ auth()->user()->id }}">User personal cabinet</a>
         <a href="/weather">Check weather</a>
-        <div class="border-div">
-            <form id="create-post-form" enctype="multipart/form-data">
-                @csrf
-                <h2>Create post</h2>
-                <label for="posttitle">Post title</label>
-                <input type="text" name="title" id="posttitle">
-                <label for="postbody">Post body</label>
-                <textarea name="body" id="postbody"></textarea>
-                <label for="postimage">Post image</label>
-                <input type="file" name="img" placeholder="Product image">
-                <input type="submit" value="Create" class="input-submit">
-            </form>
+
+        <div class="container-div">
+            <div class="ads">
+                <h2>Advertisements</h2>
+                <a href="/buy/house" class="ad">Buy a house</a>
+            </div>
+
+            <div class="border-div">
+                <form id="create-post-form" enctype="multipart/form-data">
+                    @csrf
+                    <h2>Create post</h2>
+                    <label for="posttitle">Post title</label>
+                    <input type="text" name="title" id="posttitle">
+                    <label for="postbody">Post body</label>
+                    <textarea name="body" id="postbody"></textarea>
+                    <label for="postimage">Post image</label>
+                    <input type="file" name="img" placeholder="Product image">
+                    <input type="submit" value="Create" class="input-submit">
+                </form>
+            </div>
         </div>
+
 
         <div class="border-div" id="show-posts">
         </div>
