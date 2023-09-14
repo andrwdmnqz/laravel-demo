@@ -12,15 +12,21 @@
     <h1>Buy apartment</h1>
     <a href="/">Back to main page</a>
     @if(!empty($data) && count($data) > 0)
+        @foreach($data as $apartment)
         <div class="border-house">
             <h3>
-                <span style="font-size: 1.2em;">{{ $data[0]['price'] }}</span>
-                <span style="font-size: 0.8em;">{{ $data[0]['meter_price'] }}</span>
+                <span style="font-size: 1.2em;">{{ $apartment['price'] }}</span>
+                <span style="font-size: 0.8em;">{{ $apartment['meter_price'] }}</span>
             </h3>
-            <h4>{{ $data[0]['name'] }}</h4>
-            <h4>{{ $data[0]['area'] }}, {{ $data[0]['city'] }}</h4>
-            <h4>{{ $data[0]['rooms'] }}, {{ $data[0]['square'] }}, {{ $data[0]['floor'] }}</h4>
+            <h4>{{ $apartment['name'] }}</h4>
+            @if($apartment['area'] === null)
+                <h4>{{ $apartment['city'] }}</h4>
+            @else
+                <h4>{{ $apartment['area'] }}, {{ $apartment['city'] }}</h4>
+            @endif
+            <h4>{{ $apartment['rooms'] }}, {{ $apartment['square'] }}, {{ $apartment['floor'] }}</h4>
         </div>
+        @endforeach
     @else
         <p>No data about apartments</p>
     @endif
