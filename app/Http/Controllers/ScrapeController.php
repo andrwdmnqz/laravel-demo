@@ -45,12 +45,39 @@ class ScrapeController extends Controller
                 $rooms = null;
                 $square = null;
                 $floor = null;
+                $temp = null;
+                $area = '';
 
                 $price = trim($item->textContent);
                 $city = $cityNode->length > 0 ? trim($cityNode[$itemCounter]->textContent) : '';
-                $area = $xpath->query("preceding-sibling::*[1]", $cityNode[$itemCounter])->item(0);
-                $area = trim($area->textContent);
+
                 $name = $nameNode->length > 0 ? trim($nameNode[$itemCounter]->textContent) : '';
+                $href = $nameNode[$itemCounter]->getAttribute('href');
+                $name = str_replace(" \u{A0}", "", $name);
+                $name = preg_replace('/\s+/', ' ', trim($name));
+
+                $tempItem = 1;
+                $temp = $xpath->query("preceding-sibling::*[1]", $cityNode[$itemCounter])->item(0);
+                $temp = trim($temp->textContent);
+                $temp = preg_replace('/\s+/', ' ', trim($temp));
+                $temp = str_replace(" ·", "", $temp);
+
+                while ($temp !== $name) {
+                    $temp .= ", ";
+                    $area .= $temp;
+                    $tempItem++;
+                    $temp = $xpath->query("preceding-sibling::*[$tempItem]", $cityNode[$itemCounter])->item(0);
+                    if ($temp) {
+                        $temp = trim($temp->textContent);
+                        $temp = preg_replace('/\s+/', ' ', trim($temp));
+                        $temp = str_replace(" ·", "", $temp);
+                        $temp = str_replace(" \u{A0}", "", $temp);
+                    } else {
+                        break;
+                    }
+                }
+
+                $area = trim($area);
 
                 if ($charsNode->length > 0) {
                     $priceForMeter = $charsNode->item($itemCounter * 4)->textContent;
@@ -60,16 +87,7 @@ class ScrapeController extends Controller
                 }
 
                 $price = preg_replace('/\s+/', ' ', trim($price));
-                $name = preg_replace('/\s+/', ' ', trim($name));
-                $area = preg_replace('/\s+/', ' ', trim($area));
-
                 $price = str_replace(" Додати в обране", "", $price);
-                $name = str_replace(" \u{A0}", "", $name);
-                $area = str_replace(" ·", "", $area);
-
-                if ($name === $area) {
-                    $area = null;
-                }
 
                 $tempDataItem["price"] = $price;
                 $tempDataItem["meter_price"] = $priceForMeter;
@@ -79,6 +97,7 @@ class ScrapeController extends Controller
                 $tempDataItem["rooms"] = $rooms;
                 $tempDataItem["square"] = $square;
                 $tempDataItem["floor"] = $floor;
+                $tempDataItem["href"] = $href;
 
                 if ($tempDataItem) {
                     $data[] = $tempDataItem;

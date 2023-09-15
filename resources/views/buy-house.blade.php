@@ -15,16 +15,16 @@
         @foreach($data as $apartment)
         <div class="border-house">
             <h3>
-                <span style="font-size: 1.2em;">{{ $apartment['price'] }}</span>
+                <span style="font-size: 1.2em;">{{ $apartment['price'] }}, </span>
                 <span style="font-size: 0.8em;">{{ $apartment['meter_price'] }}</span>
             </h3>
-            <h4>{{ $apartment['name'] }}</h4>
+            <h4><a class="black-text" href="https://dom.ria.com{{ $apartment['href'] }}">{{ $apartment['name'] }}</a></h4>
             @if($apartment['area'] === null)
-                <h4>{{ $apartment['city'] }}</h4>
+                <h5>{{ $apartment['city'] }}</h5>
             @else
-                <h4>{{ $apartment['area'] }}, {{ $apartment['city'] }}</h4>
+                <h5>{{ $apartment['area'] }} {{ $apartment['city'] }}</h5>
             @endif
-            <h4>{{ $apartment['rooms'] }}, {{ $apartment['square'] }}, {{ $apartment['floor'] }}</h4>
+            <h6>{{ $apartment['rooms'] }}, {{ $apartment['square'] }}, {{ $apartment['floor'] }}</h6>
         </div>
         @endforeach
     @else
