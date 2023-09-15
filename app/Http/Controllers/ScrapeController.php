@@ -26,6 +26,7 @@ class ScrapeController extends Controller
         $nameNode = $xpath->query("//a[contains(@class, 'realty-link size22 bold break')]");
         $cityNode = $xpath->query("//a[@data-level='city']");
         $charsNode = $xpath->query("//span[contains(@class, 'point-before')]");
+        $imageNode = $xpath->query("//a[contains(@class, 'realty-photo all-clickable is_shadow')]");
 
         if ($res->length > 0) {
             foreach ($res as $item) {
@@ -53,6 +54,8 @@ class ScrapeController extends Controller
 
                 $name = $nameNode->length > 0 ? trim($nameNode[$itemCounter]->textContent) : '';
                 $href = $nameNode[$itemCounter]->getAttribute('href');
+                $imageElement = $imageNode[$itemCounter]->getElementsByTagName('img')->item(0);
+                $src = $imageElement->getAttribute('src');
                 $name = str_replace(" \u{A0}", "", $name);
                 $name = preg_replace('/\s+/', ' ', trim($name));
 
@@ -98,6 +101,7 @@ class ScrapeController extends Controller
                 $tempDataItem["square"] = $square;
                 $tempDataItem["floor"] = $floor;
                 $tempDataItem["href"] = $href;
+                $tempDataItem["src"] = $src;
 
                 if ($tempDataItem) {
                     $data[] = $tempDataItem;
