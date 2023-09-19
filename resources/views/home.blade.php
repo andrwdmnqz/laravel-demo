@@ -113,8 +113,8 @@
                             postHtml += ' last seen: ' + formatLastSeen(post.last_seen) +
                                         '</h3>' +
                                         '</div>' +
-                                        post.body +
-                                        '<iframe width="560" height="315" src="' + post.video + '" frameborder="0" allowfullscreen></iframe>' +
+                                        post.body + '<br>' +
+                                        post.video +
                                         (post.is_author ? '<p><a href="/edit-post/' + post.id + '">Edit</a></p>' +
                                         '<form action="/delete-post/' + post.id + '" method="POST" class="delete-post-form">' +
                                             '@csrf' +

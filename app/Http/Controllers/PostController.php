@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Cohensive\OEmbed\Facades\OEmbed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
@@ -110,13 +111,19 @@ class PostController extends Controller
                     $is_author = false;
                 }
 
+                $video = $post->video;
+                $videoHtml = '';
+                if ($video !== null) {
+                    $videoHtml = $this->getYoutubeVideo($video);
+                }
+
                 $output[] = [
                     'id' => $post->id,
                     'image' => $post->image,
                     'title' => $post->title,
                     'author' => $post->getAuthor->name,
                     'body' => $post->body,
-                    'video' => $post->video,
+                    'video' => $videoHtml,
                     'is_author' => $is_author,
                     'author_id' => $post->getAuthor->id,
                     'last_seen' => $post->getAuthor->last_seen,
@@ -125,5 +132,13 @@ class PostController extends Controller
             }
         }
         return response()->json($output);
+    }
+
+    public function getYoutubeVideo($value) {
+        $embed = OEmbed::get($value);
+        if ($embed) {
+            return $embed->html(['width' => 400]);
+        }
+        return '';
     }
 }
