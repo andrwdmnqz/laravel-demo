@@ -28,7 +28,11 @@ class PostController extends Controller
         $inputFields = $request->validate([
             'title' => 'required',
             'body' => 'required',
-            'img' => 'image'
+            'img' => 'image',
+            'video' => [
+                'nullable',
+                'regex:/^(http(s)?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]+(&.*)?$/',
+            ],
         ]);
 
         $inputFields['title'] = strip_tags($inputFields['title']);
@@ -63,7 +67,11 @@ class PostController extends Controller
         $inputFields = $request->validate([
             'title' => 'required',
             'body' => 'required',
-            'img' => 'image'
+            'img' => 'image',
+            'video' => [
+                'nullable',
+                'regex:/^(http(s)?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]+(&.*)?$/', // Перевірка посилання на YouTube
+            ],
         ]);
 
         $filename = 'img/default-image.png';
@@ -108,6 +116,7 @@ class PostController extends Controller
                     'title' => $post->title,
                     'author' => $post->getAuthor->name,
                     'body' => $post->body,
+                    'video' => $post->video,
                     'is_author' => $is_author,
                     'author_id' => $post->getAuthor->id,
                     'last_seen' => $post->getAuthor->last_seen,

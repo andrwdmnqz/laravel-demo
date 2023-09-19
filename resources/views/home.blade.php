@@ -36,6 +36,8 @@
                     <textarea name="body" id="postbody"></textarea>
                     <label for="postimage">Post image</label>
                     <input type="file" name="img" placeholder="Product image">
+                    <label for="postvideo">Post video (optional)</label>
+                    <input type="text" id="postvideo" name="video">
                     <input type="submit" value="Create" class="input-submit">
                 </form>
             </div>
@@ -112,6 +114,7 @@
                                         '</h3>' +
                                         '</div>' +
                                         post.body +
+                                        '<iframe width="560" height="315" src="' + post.video + '" frameborder="0" allowfullscreen></iframe>' +
                                         (post.is_author ? '<p><a href="/edit-post/' + post.id + '">Edit</a></p>' +
                                         '<form action="/delete-post/' + post.id + '" method="POST" class="delete-post-form">' +
                                             '@csrf' +
@@ -126,7 +129,7 @@
                 }
             });
         }
-
+        // Format time to "n days/hours/minutes ago"
         function formatLastSeen(lastSeen) {
             var currentTimestamp = new Date();
             var lastSeenDate = new Date(lastSeen);
@@ -136,14 +139,14 @@
             var seconds = Math.floor(timeDifference / 1000);
             var minutes = Math.floor(seconds / 60);
             var hours = Math.floor(minutes / 60);
-            var days = timeDifference = Math.floor(hours / 24);
+            var days = Math.floor(hours / 24);
 
             if (days > 0) {
                 return days + ' days ago';
             } else if (hours > 0) {
                 return hours + ' hours ago';
             } else if (minutes > 0) {
-                return 'minutes ago';
+                return minutes + ' minutes ago';
             } else {
                 return 'just now';
             }

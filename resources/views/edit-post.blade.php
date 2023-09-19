@@ -17,6 +17,7 @@
         <input type="text" name="title" value="{{$post->title}}">
         <textarea name="body">{{$post->body}}</textarea>
         <input type="file" name="img" placeholder="Edit image">
+        <input type="text" name="video" value="{{ $post->video }}">
         <button type="submit">Save changes</button>
     </form>
 </body>
